@@ -20,14 +20,59 @@
 {% extends "_layout" %}
 
 {% block content %}
-	<h1>{{ entry.title }}</h1>
-
-	{{ entry.body }}
-
-	<h2>Recent News</h2>
-	<ul>
-		{% for entry in craft.entries.section('news').limit(5).find() %}
-			<li><a href="{{ entry.url }}">{{ entry.title }}</a></li>
-		{% endfor %}
-	</ul>
+    <section class="section section--centered site-intro">
+        <div class="wrap">
+    	    <h1>{{ entry.title }}</h1>
+    	   {{ entry.body }}
+        </div>
+    </section>
+    <section class="section section--centered">
+        <div class="wrap">
+        	<ul class="restaurants">
+                {% set alphabet = [
+                    'a',
+                    'b',
+                    'c',
+                    'd',
+                    'e',
+                    'f',
+                    'g',
+                    'h',
+                    'i',
+                    'j',
+                    'l',
+                    'm',
+                    'n',
+                    'o',
+                    'p',
+                    'q',
+                    'r',
+                    's',
+                    't',
+                    'u',
+                    'v',
+                    'w',
+                    'x',
+                    'y',
+                    'z'
+                ] %}
+                {% for letter in alphabet %}
+                    <li class="restaurants__restaurant-wrap">
+                        <div class="restaurants__restaurant">
+                            {% set category = craft.categories.section('restaurants').letter(letter).first() %}
+                            {% if category %}
+                                {% for image in category.image %}
+                                    <img src="{{ image.getUrl('restaurantHomepage') }}">
+                                {% endfor %}
+                                <h2 class="restaurants__title"><span class="restaurants__firstword">{{ category.shortName }}</span> Fried Chicken</h2>
+                            {% else %}
+                                <img src="/assets/images/{{ letter }}.png" />
+                                <h2 class="restaurants__title">-</h2>
+                            {% endif %}
+                        </div>
+                    </li>
+        		{% endfor %}
+        	</ul>
+        </div>
+    </section>
 {% endblock %}
